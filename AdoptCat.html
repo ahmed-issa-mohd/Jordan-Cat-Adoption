@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name='viewport' content='width=device-width, initial-scale=1'>
+  <script src='https://kit.fontawesome.com/a076d05399.js'></script>
+  <title>JordanCatAdopt</title>
+  <link rel="stylesheet" href="style.css">
+
+  <link href='https://fonts.googleapis.com/css?family=Sofia' rel='stylesheet'>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<style>
+  input[type=text],
+  select {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+  }
+
+  input[type=submit] {
+    width: 100%;
+    
+    background-color: #d24515;
+    color: white;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+
+  input[type=submit]:hover {
+    background-color: #45a049;
+  }
+
+  div {
+    border-radius: 5px;
+    background-color: #f2f2f2;
+    padding: 20px;
+    width: 50%;
+    margin: auto;
+  }
+
+  table {
+    border-collapse: collapse;
+
+    width: 50%;
+    margin: auto;
+  }
+
+  th,
+  td {
+    padding: 8px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+  }
+</style>
+
+<body>
+
+
+
+
+  <ul>
+    <li><a class="active" href="index.html">Home</a></li>
+    <li><a href="AdoptCat.html">addCats</a></li>
+    <i class='fas fa-cat logo'></i>
+  </ul>
+
+  <h3 style="text-align: center;">Add Cats for adoption</h3>
+
+  <div>
+    <form id="myForm" onsubmit="myButton.disabled = true; return true;"></form>
+    <label for="name"> Name</label>
+    <input type="text" id="name" name="firstname" placeholder="Cat's name..">
+
+    <label for="breed">Breed</label>
+    <input type="text" id="breed" name="breed" placeholder="Cat's Breed..">
+
+    <label for="age">Age</label>
+    <input type="text" id="age" name="age" placeholder="Cat's Age..">
+
+    <label for="color">Color</label>
+    <input type="text" id="color" name="color" placeholder="Cat's Color ..">
+
+
+    <input type="submit" id="myButton" onclick="insertData(event)" onsubmit="return false;"> 
+    </form>
+  </div>
+
+
+
+
+  <table id="dataTable">
+    <tr>
+      <th>Name</th>
+      <th>Breed</th>
+      <th>age</th>
+      <th>color</th>
+    </tr>
+    <tr>
+     
+    </tr>
+  </table>
+
+</body>
+<script>
+
+  function insertLocal(name, breed, age, color) {
+    var currentData = JSON.parse(((localStorage['cats'] == undefined) || (localStorage['cats'] == '')) ? 'null' : localStorage['cats']);
+
+    if (currentData == null || (currentData == "")) {
+      currentData = [];
+    }
+
+    currentData.push({
+
+      "name": name,
+      "breed": breed,
+      "age": age,
+      "color": color
+    });
+
+    localStorage.setItem('cats', JSON.stringify(currentData));
+  }
+
+
+  function insertData(event) {
+
+
+
+    var name = document.querySelector('input[id=name]').value;
+    var breed = document.querySelector('input[id=breed]').value;
+    var age = document.querySelector('input[id=age]').value;
+    var color = document.querySelector('input[id=color]').value;
+
+    insertDataIntoTable(name, breed, age, color);
+    insertLocal(name, breed, age, color);
+
+    //console.log( new FormData(form));
+
+  }
+  function insertDataIntoTable(name, breed, age, color) {
+    var table = document.getElementById('dataTable');
+
+    var newRow = table.insertRow(-1);
+
+    var nameCell = newRow.insertCell(0);
+    var breedCell = newRow.insertCell(1);
+    var ageCell = newRow.insertCell(2);
+    var colorCell = newRow.insertCell(3);
+
+    nameCell.innerHTML = name;
+    breedCell.innerHTML = breed;
+    ageCell.innerHTML = age;
+    colorCell.innerHTML = color;
+
+  }
+
+  var savedData = JSON.parse(((localStorage['cats'] == undefined) || (localStorage['cats'] == '')) ? 'null' : localStorage['cats']);
+  if (savedData != null) {
+    savedData.forEach(element => {
+      insertDataIntoTable(element.name, element.breed, element.age, element.color);
+    });
+  }
+</script>
+
+</html>
